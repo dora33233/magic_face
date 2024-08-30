@@ -17,17 +17,19 @@ def old_pic(img):
 
 def pencil(img):
     dst_gray, dst_color = cv2.pencilSketch(img, sigma_s=50, sigma_r=0.15, shade_factor=0.04)
-    return dst_gray, dst_color
+    return dst_gray
 
 
 def cartoon(img):
     dst_comic = cv2.stylization(img, sigma_s=60, sigma_r=0.07)
     return dst_comic
 
-if __name__ == '__main__':
-    path = '/home/pc/face_study/exp/timg.jpg'
-    save_path = '/home/pc/桌面/tex/cartoon.jpg'
-    img = cv2.imread(path)
-    img_color = cartoon(img)
-    cv2.imwrite(save_path, img_color)
+def apply_filter(img, filter_name='pencil'):
+    filter_dict = {'old_pic':old_pic, 'pencil': pencil, 'cartoon':cartoon}
+    
+    return filter_dict[filter_name](img)
 
+if __name__ == '__main__':
+    img = cv2.imread("examples/inputs/input_test1.jpg")
+    output = apply_filter(img,'pencil')
+    cv2.imwrite("examples/outputs/output_test1_pencil.JPG",output)
